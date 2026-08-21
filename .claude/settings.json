@@ -1,0 +1,31 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/dev/{{ .AgentName }}-agent/scripts/save-state.sh",
+            "timeout": 30,
+            "statusMessage": "Backing up identity repo..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/dev/{{ .AgentName }}-agent/scripts/write_session_tail.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark"
+}

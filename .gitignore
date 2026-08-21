@@ -1,0 +1,12 @@
+# Runtime-only artifacts inside chroot — kept in repo for crash recovery,
+# but ignore editor/OS cruft.
+.DS_Store
+*.swp
+*~
+__pycache__/
+*.py[cod]
+
+# Platform-owned, rendered into the pod by Kyber on every boot (kyber#653).
+# Not ours to version: committing it would put a frozen copy of the platform
+# manual back into every identity repo — the exact drift the boot render fixes.
+.runtime/KYBER.md
