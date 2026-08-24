@@ -56,7 +56,7 @@ Claude Code's Stop hook calls `scripts/write_session_tail.py` after every assist
 - **Memory**: use `/w` in Claude Code or `$w` in Codex, or hand-edit files under `memory/`. Run `scripts/save-state.sh` afterward; it safely no-ops if Claude's hook already committed the change.
 - **Claude Code plugins**: add project plugin settings under `.claude/` when needed. Telegram is platform-owned through the Kyber MCP sidecar; never enable the retired Telegram plugin here.
 - **Claude Code hooks**: add Stop / PostToolUse / UserPromptSubmit hooks in `.claude/settings.json`. Codex ignores this file, so shared behavior belongs in `AGENTS.md`, scripts, or skills instead.
-- **Skills**: drop new skills under `skills/<name>/SKILL.md` with frontmatter (name, description). They become available as `/<name>` in Claude Code and `$<name>` in Codex, with implicit triggering from a matching description in either runtime.
+- **Skills**: drop new skills under `skills/<name>/SKILL.md` with frontmatter (name, description). They become available as `/<name>` in Claude Code and `$<name>` in Codex, with implicit triggering from a matching description in either runtime. Inside a Kyber pod, run `kyber-skills install` afterwards: it links the skill into both runtime homes so it works immediately, then commits and pushes. See [`skills/README.md`](skills/README.md).
 
 ## See also
 

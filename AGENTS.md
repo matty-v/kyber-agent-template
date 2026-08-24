@@ -61,6 +61,31 @@ Available skills (in `skills/`). Invoke them as `/name` in Claude Code or `$name
 - `compact-memory` — weekly memory curation: age-tier memories (hot verbatim / warm summarized / cold archived to `memory/archive/`), keep `MEMORY.md` lean, send a short digest. Runs on your own identity; git keeps every change revertible.
 - `sync-identity` — the safe way to save any identity change (SOUL, PRINCIPLES, AGENTS.md, skills, docs): pulls `main` first so you never diverge from origin, then commits + pushes via the Kyber Platform GitHub App token. Run it before you start editing (to get current) and after any edit (to save). Your default loop — don't wait to be told to commit and push.
 
+### Adding a skill
+
+Skills live in exactly one place, whatever runtime you run:
+
+```
+skills/<name>/SKILL.md
+```
+
+`SKILL.md` needs YAML frontmatter with a `name` and a `description`. The **directory name is what gets invoked** — if the frontmatter disagrees, the directory wins. Bundle anything else the skill needs (a `references/` folder, scripts, assets) inside the same directory.
+
+Once you have written it — or downloaded one from somewhere — save it with:
+
+```
+kyber-skills install
+```
+
+One idempotent command does the whole job: it links the skill into both runtimes so it works **immediately** rather than at your next boot, then commits and pushes it. To pull in something from elsewhere on disk: `kyber-skills install --from /tmp/some-skill`.
+
+Two things to avoid:
+
+- **Never write a skill straight into `~/.claude/skills/` or `~/.codex/skills/`.** It appears to work and is committed nowhere, so it is gone the moment you are reprovisioned.
+- **Don't reuse a name from `vendor/*/skills/`.** A vendored skill of the same name replaces yours silently.
+
+`kyber-skills list` shows what you actually have, including anything broken. The same inventory appears — read-only — on your agent's **Skills** tab in the Kyber UI, so the operator can see what you can do without asking. Adding, changing, and removing skills is done by asking you; there is no way to do it from the UI.
+
 ## Repo layout
 
 - `identity/SOUL.md`, `identity/PRINCIPLES.md` — who `{{ .AgentName }}` is and how the user wants to work together
@@ -69,7 +94,7 @@ Available skills (in `skills/`). Invoke them as `/name` in Claude Code or `$name
 - `state/` — planned-shutdown summaries (written by the `restart` skill)
 - `.runtime/` — platform recall plus optional Claude Code tail; ephemeral but valuable for crash recovery
 - `scripts/` — runtime-neutral state saver plus Claude Code hook implementation
-- `skills/` — slash commands available in the session
+- `skills/` — your skills, one directory each (`skills/<name>/SKILL.md`); invoked as `/name` in Claude Code or `$name` in Codex
 - `.claude/settings.json` — Claude Code-only project hooks; Codex safely ignores it
 
 Edit any of these to evolve `{{ .AgentName }}` over time, then save with the `sync-identity` skill (pull → edit → sync). Changes pushed here survive agent restarts and environment moves.
