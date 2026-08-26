@@ -12,8 +12,11 @@ cd "$REPO_DIR"
 git pull --rebase --autostash || git rebase --abort 2>/dev/null || true
 
 git add -A memory/ state/
-if ! git diff --cached --quiet; then
-  git commit -m "Save state: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+if ! git diff --cached --quiet -- memory/ state/; then
+  # Commit only the state paths this hook owns. Identity edits may already be
+  # staged by an interactive workflow when PostToolUse fires; sweeping the
+  # whole index would hide them under a misleading auto-save commit.
+  git commit -m "Save state: $(date -u +%Y-%m-%dT%H:%M:%SZ)" -- memory/ state/
   git push
   echo "State saved and pushed."
 else
