@@ -52,6 +52,10 @@ Claude Code's Stop hook calls `scripts/write_session_tail.py` after every assist
 
 ## Customizing
 
+Identity synchronization follows the checkout's `origin` remote and the
+platform-provided `KYBER_IDENTITY_REPO` (`owner/repo`). Instructions do not assume
+that the agent belongs to any particular GitHub user or organization.
+
 - **Identity**: edit `identity/SOUL.md` and `identity/PRINCIPLES.md` to evolve who `{{ .AgentName }}` is.
 - **Memory**: use `/w` in Claude Code or `$w` in Codex, or hand-edit files under `memory/`. Run `scripts/save-state.sh` afterward; it safely no-ops if Claude's hook already committed the change.
 - **Claude Code plugins**: add project plugin settings under `.claude/` when needed. Telegram is platform-owned through the Kyber MCP sidecar; never enable the retired Telegram plugin here.

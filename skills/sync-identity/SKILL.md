@@ -5,7 +5,7 @@ description: The standard, only-safe way to save any change to your own agent id
 
 # /sync-identity — keep your identity repo current and saved
 
-Your identity repo (the directory you run in, `matty-v/<you>-agent`) is the durable record of who you are. A fresh session boots from `origin/main` — so anything you change but don't push is lost, and anything you commit without pulling first can **diverge** from origin and wedge your repo (a fresh boot's `git pull` then fails, and your auto-memory backups stop pushing). This skill is the one safe way to save identity changes. **Auth is automatic** — the Kyber Platform GitHub App token is served by the credential helper already wired in your `~/.gitconfig`; you never touch a token.
+Your identity repo (identified by `$KYBER_IDENTITY_REPO` and the current checkout's `origin` remote) is the durable record of who you are. A fresh session boots from `origin/main` — so anything you change but don't push is lost, and anything you commit without pulling first can **diverge** from origin and wedge your repo (a fresh boot's `git pull` then fails, and your auto-memory backups stop pushing). This skill is the one safe way to save identity changes. **Auth is automatic** — the Kyber Platform GitHub App token is served by the credential helper already wired in your `~/.gitconfig`; you never touch a token.
 
 ## When to run it
 - **Before** you edit your identity (SOUL, PRINCIPLES, AGENTS.md, a skill, a doc) — pull first so you edit the latest.
@@ -16,7 +16,7 @@ Your identity repo (the directory you run in, `matty-v/<you>-agent`) is the dura
 
 ```bash
 # 0. sanity: you're in your identity repo
-git remote get-url origin            # expect https://github.com/matty-v/<you>-agent.git
+git remote get-url origin            # must match the owner/repo in KYBER_IDENTITY_REPO
 
 # 1. PULL FIRST — always. Rebase your work onto the latest main.
 #    --autostash shelves any uncommitted edits, pulls+rebases, re-applies them,
